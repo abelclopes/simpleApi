@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simpleapi-deployment
+  namespace: zeus
+  labels:
+    app: simpleapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simpleapi
+  template:
+    metadata:
+      labels:
+        app: simpleapi
+    spec:
+      containers:
+      - name: simpleapi
+        image: localhost:5000/simpleapi-api:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
+        - name: ConnectionStrings__DefaultConnection
+          value: "Server=db;Database=simpleapidb;User Id=sa;Password=P@ssw0rd;"
