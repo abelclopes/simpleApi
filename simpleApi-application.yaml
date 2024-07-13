@@ -1,20 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: simpleApi
-  namespace: argocd  # Certifique-se de que o namespace onde o ArgoCD está instalado é correto
+  name: simpleapi
+  namespace: argocd
 spec:
   destination:
-    namespace: simpleApi-app
+    name: ''
+    namespace: simpleapi-app
     server: 'https://kubernetes.default.svc'
   source:
     path: k8s-manifests
-    repoURL: 'https://github.com/abelclopes/simpleApi.git'
+    repoURL: 'git@github.com:abelclopes/simpleApi.git'
     targetRevision: HEAD
-  project: simpleApi
+  sources: []
+  project: simpleapi
   syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
     automated:
       prune: false
       selfHeal: false
-    syncOptions:
-      - CreateNamespace=true
