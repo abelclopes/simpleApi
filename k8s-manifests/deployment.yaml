@@ -1,0 +1,34 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simpleapi-deployment
+  labels:
+    app: simpleapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: simpleapi
+  template:
+    metadata:
+      labels:
+        app: simpleapi
+    spec:
+      containers:
+        - name: simpleapi
+          image: abellopes/simpleapi:latest
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: "/health"
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: "/health"
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 20
